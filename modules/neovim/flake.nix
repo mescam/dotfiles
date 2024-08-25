@@ -28,6 +28,13 @@
         echo "Neovim setup complete!"
       '';
     };
+
+    apps.x86_64-linux.default = {
+      type = "app";
+      program = "${nixpkgs.neovim}/bin/nvim";
+    };
+
+    packages.x86_64-linux.default = nixpkgs.neovim;
   };
 }
 
