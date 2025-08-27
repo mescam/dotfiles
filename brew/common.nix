@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   taps = [ "homebrew/bundle" ];
@@ -13,7 +18,7 @@ let
     "raycast"
     "brave-browser"
     "karabiner-elements"
-
+    "claude-code"
     "slack"
     "microsoft-teams"
 
@@ -21,26 +26,40 @@ let
     "winbox"
 
   ];
-in with lib; {
+in
+with lib;
+{
   home.sessionPath = [ "/opt/homebrew/bin" ];
 
   home.file.".Brewfile" = {
-    text = (concatMapStrings (tap:
-      ''tap "'' + tap + ''
-        "
-      ''
+    text =
+      (concatMapStrings (
+        tap:
+        ''tap "''
+        + tap
+        + ''
+          "
+        ''
 
-    ) taps) + (concatMapStrings (brew:
-      ''brew "'' + brew + ''
-        "
-      ''
+      ) taps)
+      + (concatMapStrings (
+        brew:
+        ''brew "''
+        + brew
+        + ''
+          "
+        ''
 
-    ) brews) + (concatMapStrings (cask:
-      ''cask "'' + cask + ''
-        "
-      ''
+      ) brews)
+      + (concatMapStrings (
+        cask:
+        ''cask "''
+        + cask
+        + ''
+          "
+        ''
 
-    ) casks);
+      ) casks);
     onChange = ''
       /opt/homebrew/bin/brew bundle install --cleanup --no-upgrade --force --no-lock --global""
     '';

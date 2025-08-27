@@ -1,14 +1,16 @@
 { config, pkgs, ... }:
 
+let
+  isDarwin = pkgs.stdenv.isDarwin;
+in
 {
-  # Example: shared user packages
   home.packages = with pkgs; [
     # config shell
     oh-my-zsh
     tmux
     zplug
-    pure-prompt
     fzf
+    direnv
 
     # development
     gh
@@ -17,6 +19,15 @@
     azure-cli
     go
     uv
+    lazygit
+    curl
+    kubectl
+    kubernetes-helm
+    k9s
+    imagemagick
+    mermaid-cli
+    d2
+    gnuplot
 
     # cloud
     awscli2
@@ -37,16 +48,26 @@
     yaml-language-server
     pyright
     nil
+    gopls
+    lua5_1
 
     # puml
     plantuml
     graphviz
 
+    # llms
+    opencode
+
   ];
-  home.file.".zshrc".source = ../zshrc;
+
   home.file.".tmux.conf".source = ../tmux.conf;
-  programs.zsh.enable = true;
+
+  programs.zsh = {
+    enable = true;
+    initContent = builtins.readFile ../zshrc;
+    envExtra = builtins.readFile ~/.zshenv.append;
+  };
+
   home.stateVersion = "25.05";
   home.username = "jakub";
 }
-
